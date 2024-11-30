@@ -16,5 +16,8 @@ The price of each item is clearly shown, as well as the combined price for the f
 ACCESSIBILITY  
 The main thing I focused on was ensuring that the forms had labels, names, and that there were no obscure inputs that a screenreader could not read. The other thing that I did not anticipate at first but proved to be very important, was specifically labeling every part on the item page and in the cart that would provide them important information. As such, it now will read out the item's description and price, and if they have it in their cart it will review the name, quantity and pricing information.
 
+INTERNATIONALIZATION
+I also implemented both an english and japanese translation for this application. It used i18n and can hot swap between both on demand by use of buttons in the navigation bar.
+
 INTEGRATION AND UNIT TESTING  
 I wrote 2 integration tests and 1 unit test. All 3 pass and cover api calls, mocking functions, infiniteQuery and ensuring elements are rendering on screen.

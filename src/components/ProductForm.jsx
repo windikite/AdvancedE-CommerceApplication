@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { object, func } from 'prop-types';
 import { Form, Button, Alert, Modal, Spinner } from 'react-bootstrap';
 import { createProduct, fetchProduct, updateProduct } from "../hooks/queries";
+import { useTranslation } from "react-i18next";
 
 const ProductForm = () => {
     const [product, setProduct] = useState({title: '', price: '', image: ''});
@@ -12,6 +13,7 @@ const ProductForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const fetchedData = async () => {
@@ -73,7 +75,7 @@ const ProductForm = () => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <h3>{id ? 'Edit' : 'Add' } Product</h3>
+                <h3>{id ? 'Edit' : 'Add' } {t('product')}</h3>
                 {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
                 <Form.Group controlId="productTitle">
                     <Form.Label>Title:</Form.Label>
@@ -123,11 +125,11 @@ const ProductForm = () => {
 
                 <Modal show={showSuccessModal} onHide={handleclose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Success</Modal.Title>
+                        <Modal.Title>{t('success')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>Product has been successfully {id ? 'updated' : 'added'}!</Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleclose}>Close</Button>
+                        <Button variant="secondary" onClick={handleclose}>{t('close')}</Button>
                     </Modal.Footer>
                 </Modal>
             </Form>

@@ -4,11 +4,13 @@ import {Container, Row, Col, Alert} from 'react-bootstrap'
 import { State } from "../StateProvider"
 import { fetchUsers, logIn } from "../hooks/queries";
 import UserForm from "./UserForm";
+import { useTranslation } from "react-i18next";
 
 function Login() {
     const {user, setUser} = State();
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const storedUser = localStorage.getItem('userSession');
@@ -58,7 +60,7 @@ function Login() {
                     <UserForm
                         submitFunction={handleLogin}
                         prefillData={null}
-                        buttonMessage='Log In'
+                        buttonMessage={t('logIn')}
                     />
                 </Col>
             </Row>

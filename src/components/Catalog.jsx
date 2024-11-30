@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { useParams } from 'react-router-dom';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useTranslation } from "react-i18next";
 
 function Catalog() {
     const { category } = useParams();
     const [sortOrder, setSortOrder] = useState('asc');
+    const {t, i18n} = useTranslation();
 
     const handleFetch = ({ pageParam = 1 }) => {
         return category
@@ -64,8 +66,8 @@ function Catalog() {
                         Order: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleSortOrderChange('asc')}>Ascending</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleSortOrderChange('desc')}>Descending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSortOrderChange('asc')}>{t('ascending')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSortOrderChange('desc')}>{t('descending')}</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>

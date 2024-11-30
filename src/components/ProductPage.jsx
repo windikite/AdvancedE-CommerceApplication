@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Button, Modal, Image, Row, Col } from 'react-bootstrap';
 import { State } from "../StateProvider"
 import { fetchProduct, deleteProduct } from "../hooks/queries";
+import { useTranslation } from "react-i18next";
 
 function ProductPage() {
     const { user, cart, setCart } = State();
@@ -12,7 +13,8 @@ function ProductPage() {
     const [isSubmitting, setSubmitting] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [errorMesage, setErrorMessage] = useState('');
-
+    const {t, i18n} = useTranslation();
+    
     useEffect(() => {
         const fetchedData = async () => {
             try {
@@ -68,34 +70,34 @@ function ProductPage() {
                             variant="warning" 
                             disabled={isSubmitting ? true : false}
                             onClick={() => navigate(`/edit-product/${id}`)} 
-                            className="me-2">Edit
+                            className="me-2">{t('edit')}
                         </Button>
                         <Button 
                             variant="danger" 
                             disabled={isSubmitting ? true : false}
                             onClick={() => handleDelete(id)} 
-                            className="me-2">Delete
+                            className="me-2">{t('delete')}
                         </Button>
                     </div>
                 }
                 {user.name !== 'admin' && user.name !== '' && 
                     <div className='d-flex'>
-                        <Button variant="primary" onClick={() => addToCart(id)} className="me-2">Add to Cart</Button>
+                        <Button variant="primary" onClick={() => addToCart(id)} className="me-2">{t('addToCart')}</Button>
                     </div>
                 }
                 {user.name === '' && 
                     <div className='d-flex'>
-                        <Button variant="primary" onClick={() => navigate(`/login`)} className="me-2">Add to Cart</Button>
+                        <Button variant="primary" onClick={() => navigate(`/login`)} className="me-2">{t('addToCart')}</Button>
                     </div>
                 }
             </Col>
             <Modal show={showSuccessModal} onHide={handleclose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Success</Modal.Title>
+                    <Modal.Title>{t('success')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Product has been successfully deleted!</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleclose}>Close</Button>
+                    <Button variant="secondary" onClick={handleclose}>{t('close')}</Button>
                 </Modal.Footer>
             </Modal>
         </Row>

@@ -4,6 +4,7 @@ import { State } from "../StateProvider"
 import { useEffect, useState } from "react";
 import { deleteUser, fetchUser } from "../hooks/queries";
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 function UserProfile() {
     const {user, setUser} = State();
@@ -12,7 +13,8 @@ function UserProfile() {
     const [errorMessage, setErrorMessage] = useState('');
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isSubmitting, setSubmitting] = useState(false);
-
+    const {t, i18n} = useTranslation();
+    
     const getUserData = async () => {
         const foundUser = await fetchUser(user.userId); 
 
@@ -56,26 +58,26 @@ function UserProfile() {
     return (
         <Container>
             {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
-            <h1>User Profile</h1>
-            <h2>Username: {userInfo.username}</h2>
-            <h2>Email: {userInfo.email}</h2>
-            <h2>Name: {userInfo.name.firstname} {userInfo.name.lastname}</h2>
-            <h2>Address: {userInfo.address.number} {userInfo.address.street}, {userInfo.address.city}, {userInfo.address.zipcode}</h2>
+            <h1>{t('userProfile')}</h1>
+            <h2>{t('username')}: {userInfo.username}</h2>
+            <h2>{t('email')}: {userInfo.email}</h2>
+            <h2>{t('name')}: {userInfo.name.firstname} {userInfo.name.lastname}</h2>
+            <h2>{t('address')}: {userInfo.address.number} {userInfo.address.street}, {userInfo.address.city}, {userInfo.address.zipcode}</h2>
             <Button 
                 variant="warning"
                 onClick={() => navigate('/edit-user')}
-            >Edit</Button>
+            >{t('edit')}</Button>
             <Button 
                 variant="danger"
                 onClick={() => handleDeleteUser()}
-            >Delete</Button>
+            >{t('delete')}</Button>
             <Modal show={showSuccessModal} onHide={handleclose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Success</Modal.Title>
+                    <Modal.Title>{t('success')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>Account has been deleted!!</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleclose}>Close</Button>
+                    <Button variant="secondary" onClick={handleclose}>{t('close')}</Button>
                 </Modal.Footer>
             </Modal>
         </Container>

@@ -17,6 +17,7 @@ import Cart from './components/Cart';
 import ViewUser from './components/ViewUser';
 import EditUser from './components/EditUser';
 import CreateUser from './components/CreateUser';
+import './i18n';
 
 const queryClient  = new QueryClient();
 

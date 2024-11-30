@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Card, Badge, Modal, Dropdown } from 'react-bootstrap';
 import { fetchAllProducts, checkOut } from '../hooks/queries';
 import { State } from "../StateProvider"
+import { useTranslation } from "react-i18next";
 
 const Cart = () => {
     const { user, cart, setCart } = State();
@@ -13,6 +14,7 @@ const Cart = () => {
     const [isSubmitting, setSubmitting] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [errorMesage, setErrorMessage] = useState('');
+    const {t, i18n} = useTranslation();
 
     function calculateTotal(){
         let total = 0;
@@ -155,17 +157,17 @@ const Cart = () => {
                     <div className="bg-dark-subtle w-100 h-100 mx-auto p-2 rounded">
                         {itemsInCart.map(product => createCard(product.id, product))}
                     </div>
-                    <Button variant="success" onClick={() => handleCheckOut()} className="w-100 mb-3">Check Out - ${calculateTotal()}</Button>
+                    <Button variant="success" onClick={() => handleCheckOut()} className="w-100 mb-3">{t('checkOut')} - ${calculateTotal()}</Button>
                 </Col>
             </Row>
 
             <Modal show={showSuccessModal} onHide={handleclose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Success</Modal.Title>
+                    <Modal.Title>{t('success')}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Order successful!</Modal.Body>
+                <Modal.Body>{t('orderSuccessful')}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleclose}>Close</Button>
+                    <Button variant="secondary" onClick={handleclose}>{t('close')}</Button>
                 </Modal.Footer>
             </Modal>
         </Container>

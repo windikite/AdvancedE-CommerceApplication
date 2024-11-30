@@ -3,49 +3,58 @@ import { Navbar, Nav } from "react-bootstrap";
 import { State } from "../StateProvider"
 import { Button, Badge} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function NavigationBar(){
     const { user, cart } = State();
     const navigate = useNavigate();
+    const {t, i18n} = useTranslation();
 
+    const changeLanguage = (language) => {
+        i18n.changeLanguage(language);
+    }
     return (
         <Navbar bg="light" expand="lg" className="p-2 mb-3">
-            <Navbar.Brand href="/" className="text-info align-items-center">Home</Navbar.Brand>
+            <Navbar.Brand href="/" className="text-info align-items-center">{t('home')}</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
                     <Nav.Link as={NavLink} to="/catalog" activeclassname="active">
-                        Browse
+                        {t('browse')}
                     </Nav.Link>
 
                     {user.isLoggedIn ? 
                         <Nav.Link as={NavLink} to="/logout" activeclassname="active">
-                            Log Out
+                            {t('logOut')}
                         </Nav.Link> :
                         <Nav.Link as={NavLink} to="/login" activeclassname="active">
-                            Log In
+                            {t('logIn')}
                         </Nav.Link>
                     }
 
                     {user.isLoggedIn && 
                         <Nav.Link as={NavLink} to="/view-user" activeclassname="active">
-                            Account
+                            {t('account')}
                         </Nav.Link>
                     }
 
                     {!user.isLoggedIn &&
                         <Nav.Link as={NavLink} to="/sign-up" activeclassname="active">
-                            Sign Up
+                            {t('signUp')}
                         </Nav.Link>
                     }
 
                     {user.name === 'johnd' && 
                         <Nav.Link as={NavLink} to="/add-product" activeclassname="active">
-                            Add Product
+                            {t('add')} {t('product')}
                         </Nav.Link>
                     }
                 </Nav>
             </Navbar.Collapse>
+            <div>
+                <Button onClick={() => changeLanguage('en')} variant="secondary" className="me-2">English</Button>
+                <Button onClick={() => changeLanguage('jp')} variant="secondary" className="me-2">日本語</Button>
+            </div>
             {user.isLoggedIn && 
                 <Button 
                     variant='light'
