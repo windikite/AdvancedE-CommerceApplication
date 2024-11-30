@@ -59,9 +59,9 @@ function ProductPage() {
                 <Image src={product.image} alt="product picture" rounded style={{maxHeight: '20rem'}} />
             </Col>
             <Col className="d-flex flex-column text-align-center align-items-center">
-                <h2>{product.title}</h2>
-                <h3>from ${product.price}</h3>
-                <h4>{product.description}</h4>
+                <h2 aria-label="product title">{product.title}</h2>
+                <h3 aria-label="product price">from ${product.price}</h3>
+                <h4 aria-label="product description">{product.description}</h4>
                 {user.name === 'admin' && 
                     <div className='d-flex'>
                         <Button 

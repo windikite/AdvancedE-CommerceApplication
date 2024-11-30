@@ -16,6 +16,7 @@ import ProductPage from './components/ProductPage';
 import Cart from './components/Cart';
 import ViewUser from './components/ViewUser';
 import EditUser from './components/EditUser';
+import CreateUser from './components/CreateUser';
 
 const queryClient  = new QueryClient();
 
@@ -23,11 +24,11 @@ function App() {
   return (
     <StateProvider>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <NavigationBar />
+        <NavigationBar />
           <Routes>
             <Route path='/' element={<HomePage />} />
             {/* Product paths */}
+            <Route path='/catalog/:category' element={<Catalog />} />
             <Route path='/catalog' element={<Catalog />} />
             <Route path='/add-product' element={<ProductForm />}/>
             <Route path='/edit-product/:id' element={<ProductForm />}/>
@@ -36,12 +37,12 @@ function App() {
             {/* User paths */}
             <Route path='/login' element={<Login />}/>
             <Route path='/logout' element={<Logout />}/>
+            <Route path='/sign-up' element={<CreateUser />}/>
             <Route path='/view-user' element={<ViewUser />}/>
             <Route path='/edit-user' element={<EditUser />}/>
             {/* Wildcard */}
             <Route path='*' element={<NotFound />} />
           </Routes>
-        </Router>
       </QueryClientProvider>
     </StateProvider>
   );

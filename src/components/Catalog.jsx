@@ -1,50 +1,84 @@
-import {useInfiniteQuery} from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
-import { fetchProducts } from '../hooks/queries';
-import { Button, Container, Spinner } from 'react-bootstrap';
-import React from 'react';
+import { fetchProducts, fetchProductsByCategory } from '../hooks/queries';
+import { Button, Container, Spinner, Alert, Dropdown } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import { useParams } from 'react-router-dom';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 function Catalog() {
-    const {data, isLoading, isError, isSuccess, isFetching, fetchNextPage, hasNextPage} = useInfiniteQuery({
-        queryKey: ['products'],
-        queryFn: fetchProducts,
+    const { category } = useParams();
+    const [sortOrder, setSortOrder] = useState('asc');
+
+    const handleFetch = ({ pageParam = 1 }) => {
+        return category
+            ? fetchProductsByCategory(category, pageParam, 50,sortOrder)
+            : fetchProducts({ pageParam, sortOrder });
+    };
+
+    const {
+        data,
+        isLoading,
+        isError,
+        isSuccess,
+        isFetching,
+        fetchNextPage,
+        hasNextPage,
+        refetch,
+    } = useInfiniteQuery({
+        queryKey: ['products', category, sortOrder], 
+        queryFn: handleFetch,
         getNextPageParam: (lastPage, allPages) => {
             const nextPage = allPages.length + 1;
             return nextPage <= 5 ? nextPage : undefined;
-        }
-    })
+        },
+    });
 
     const [allProducts, setAllProducts] = useState([]);
 
     useEffect(() => {
-        setAllProducts(fetchProducts());
-        if(data){
-            setAllProducts(data.pages)
+        if (data) {
+            const products = data.pages.flat();
+            setAllProducts(products);
         }
-    }, [data])
+    }, [data]);
 
-    if (isLoading) return <Spinner animation='border' role='status'><span className='visually-hidden'>Loading...</span></Spinner>
-    if (isError) return <Alert variant='danger'>Error fetching data</Alert>
+    if (isLoading) {
+        return <Spinner animation="border" role="status"><span className="visually-hidden">Loading...</span></Spinner>;
+    }
+
+    if (isError) {
+        return <Alert variant="danger">Error fetching data</Alert>;
+    }
+
+    const handleSortOrderChange = (newSortOrder) => {
+        setSortOrder(newSortOrder);
+        refetch();  // Trigger refetch when order option changes
+    };
 
     return (
-        <Container className='mx-auto'>
-            {/* {showDeleteSuccessAlert && <Alert variant="success">Post deleted!</Alert>} */}
-            <div className='d-flex flex-wrap mx-auto justify-content-center'>
-                {isSuccess && allProducts.length > 0 && allProducts.map((page, index) => (
-                    <React.Fragment key={index}>
-                        {page.map(product => (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                            />
-                        ))}
-                    </React.Fragment>
+        <Container className="mx-auto">
+            <div className="d-flex justify-content-between mb-3">
+                {/* Sort Order Dropdown */}
+                <Dropdown>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-sort-order">
+                        Order: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleSortOrderChange('asc')}>Ascending</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSortOrderChange('desc')}>Descending</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </div>
+
+            <div className="d-flex flex-wrap mx-auto justify-content-center">
+                {isSuccess && allProducts.length > 0 && allProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
                 ))}
             </div>
+
             {hasNextPage && (
-                <div className='d-flex justify-content-center'>
-                    <Button variant='primary' disabled={isFetching} onClick={() => fetchNextPage()}>
+                <div className="d-flex justify-content-center">
+                    <Button variant="primary" disabled={isFetching} onClick={() => fetchNextPage()}>
                         {isFetching ? 'Loading...' : 'Load More'}
                     </Button>
                 </div>

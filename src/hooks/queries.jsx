@@ -7,13 +7,14 @@ export const fetchProduct = async (productId) => {
     return response.json()
 }
 
-export const fetchProducts = async ({pageParam = 1}) => {
-    const response = await fetch(`https://fakestoreapi.com/products/?limit=50&_page=${pageParam}`);
+export const fetchProducts = async ({ pageParam = 1, sortOrder = 'asc' }) => {
+    const response = await fetch(`https://fakestoreapi.com/products/?page=${pageParam}&limit=50&sort=${sortOrder}`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
     return response.json();
 };
+
 
 export const fetchAllProducts = async () => {
     const response = await fetch(`https://fakestoreapi.com/products/`);
@@ -77,7 +78,7 @@ export const checkOut = async (cart) => {
 }
 
 export const logIn = async (userInfo) => {
-    const response = await fetch(`https://fakestoreapi.com/carts`, {
+    const response = await fetch(`https://fakestoreapi.com/users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -85,7 +86,21 @@ export const logIn = async (userInfo) => {
         body: JSON.stringify(userInfo)
     })
     if(!response.ok) {
-        throw new Error('Failed to add new post')
+        throw new Error('Failed to log in')
+    }
+    return response.json();
+}
+
+export const createUser = async (userInfo) => {
+    const response = await fetch(`https://fakestoreapi.com/users`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userInfo)
+    })
+    if(!response.ok) {
+        throw new Error('Failed to add user')
     }
     return response.json();
 }
@@ -129,3 +144,20 @@ export const deleteUser = async (userId) => {
     }
     return response.json()
 }
+
+export const fetchCategories = async () => {
+    const response = await fetch(`https://fakestoreapi.com/products/categories`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+
+export const fetchProductsByCategory = async (category, page = 1, limit = 50, sortOrder = 'asc') => {
+    const response = await fetch(`https://fakestoreapi.com/products/category/${category}?page=${page}&limit=${limit}&sort=${sortOrder}`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+

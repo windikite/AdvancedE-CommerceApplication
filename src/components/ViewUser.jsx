@@ -1,3 +1,4 @@
+import React from "react";
 import { Container, Button, Alert, Modal } from "react-bootstrap";
 import { State } from "../StateProvider"
 import { useEffect, useState } from "react";
@@ -17,7 +18,6 @@ function UserProfile() {
 
         if (foundUser) {
             setUserInfo(foundUser)
-            console.log(user.userId, foundUser)
         } else {
             setErrorMessage("User not found");
         }
@@ -70,14 +70,14 @@ function UserProfile() {
                 onClick={() => handleDeleteUser()}
             >Delete</Button>
             <Modal show={showSuccessModal} onHide={handleclose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Success</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Account has been deleted!!</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleclose}>Close</Button>
-                    </Modal.Footer>
-                </Modal>
+                <Modal.Header closeButton>
+                    <Modal.Title>Success</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Account has been deleted!!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleclose}>Close</Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 }

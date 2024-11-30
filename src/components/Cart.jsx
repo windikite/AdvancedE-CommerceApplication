@@ -98,30 +98,33 @@ const Cart = () => {
     
     function createCard(key, p){
         return (
-            <Card className="ms-auto me-auto mb-0 p-1 shadow border-info " style={{width: '95%'}} key={key}>
+            <Card aria-label='item in cart' className="ms-auto me-auto mb-0 p-1 shadow border-info " style={{width: '95%'}} key={key}>
                 <Row>
                     <Col xs lg='2'>
-                        <Card.Img src={p.image} style={{height: "5rem", width: "5rem"}} />
+                        <Card.Img aria-label='item picture' src={p.image} style={{height: "5rem", width: "5rem"}} />
                     </Col>
                     <Col md="6">
                         <Card.Body className='d-flex flex-column align-items-center'>
-                            <Card.Title className="mb-0 text-start">{p.title}</Card.Title>
-                            <Card.Text className='text-secondary'>
-                                ${p.price}/ea
+                            <Card.Title aria-label='item name' className="mb-0 text-start">{p.title}</Card.Title>
+                            <Card.Text aria-label='item price' className='text-secondary'>
+                                ${p.price} each
                             </Card.Text>
                         </Card.Body>
                     </Col>
                     <Col xs lg='2'>
                         <Card.Body className='d-flex flex-row align-items-center'>
                             <Button 
+                                aria-label='add to cart'
                                 variant="primary" 
                                 onClick={() => addToCart(p.id)}
                             >+</Button>
                             <Button 
+                                aria-label='item quantity'
                                 variant="dark text-light" 
                                 disabled
                             >{p.count}</Button>
                             <Button 
+                                aria-label='remove from cart'
                                 variant="primary" 
                                 onClick={() => removeFromCart(p.id)}
                             >-</Button>
@@ -129,9 +132,9 @@ const Cart = () => {
                     </Col>
                     <Col xs lg='2'>
                         <Card.Body className='d-flex flex-column align-items-center'>
-                            <Card.Title className="mb-0 text-start text-success">${p.price*p.count}</Card.Title>
-                            <Card.Text className='text-secondary'>
-                                ${p.price}/ea x {p.count}
+                            <Card.Title aria-label='price for quantity of item' className="mb-0 text-start text-success">${p.price*p.count}</Card.Title>
+                            <Card.Text aria-label='price breakdown' className='text-secondary'>
+                                ${p.price} each
                             </Card.Text>
                         </Card.Body>
                     </Col>
