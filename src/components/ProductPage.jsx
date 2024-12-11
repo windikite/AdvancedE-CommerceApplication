@@ -51,7 +51,7 @@ function ProductPage() {
 
     function addToCart(id){
         const cart = JSON.parse(localStorage.getItem('cart'));
-        const newCart = [...cart, id]
+        const newCart = [...cart || {}, id]
         setCart(newCart)
         localStorage.setItem("cart", JSON.stringify(newCart))
     }
